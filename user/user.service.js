@@ -5,26 +5,26 @@ const jwt = require('jsonwebtoken');
 const users = [{ id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User' }];
 
 module.exports = {
-    authenticate
+  authenticate
 };
 
 async function authenticate({ username, password }) {
-    const user = users.find(u => u.username === username && u.password === password);
+  const user = users.find(u => u.username === username && u.password === password);
 
-    if (!user) throw 'Username or password is incorrect';
+  if (!user) throw 'Username or password is incorrect';
 
-    // create a jwt token that is valid for 7 days
-    const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: '7d' });
+  // create a jwt token that is valid for 7 days
+  const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: '7d' });
 
-    return {
-        ...omitPassword(user),
-        token
-    };
+  return {
+    ...omitPassword(user),
+    token
+  };
 }
 
 // helper functions
 
 function omitPassword(user) {
-    const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+  const { password, ...userWithoutPassword } = user;
+  return userWithoutPassword;
 }

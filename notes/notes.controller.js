@@ -9,6 +9,6 @@ module.exports = router;
 
 function getTree(req, res, next) {
   notesService.getTree()
-        .then(dirs => res.json(dirs))
-        .catch(next);
+    .then(dirs => res.json(dirs))
+    .catch(next);
 }

@@ -7,5 +7,5 @@ router.get('/:what', sayHello);
 module.exports = router;
 
 function sayHello(req, res, next) {
-    return res.json({ message: `Hello ${req.params.what}!` });
+  return res.json({ message: `Hello ${req.params.what}!` });
 }
