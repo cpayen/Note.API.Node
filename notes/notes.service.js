@@ -3,12 +3,18 @@ const path = require('path');
 const config = require('config.json');
 
 module.exports = {
-  getTree
+  getTree,
+  getDir
 };
 
 async function getTree() {
   const { dataPath } = config;
   return await walkDirs(path.resolve(dataPath, 'notes'));
+}
+
+async function getDir(rootDir) {
+  const { dataPath } = config;
+  return await listAll(path.resolve(dataPath, 'notes', rootDir));
 }
 
 async function walkDirs(rootDir) {
@@ -23,4 +29,15 @@ async function walkDirs(rootDir) {
     dir.children = await walkDirs(dir.path);
   }
   return dirs;
+}
+
+async function listAll(rootDir) {
+  const dirents = await fs.promises.readdir(rootDir, { withFileTypes: true });
+  const items = await Promise.all(dirents.map((dirent) => {
+    const itemPath = path.resolve(rootDir, dirent.name);
+    const stats = fs.statSync(itemPath);
+    // const ext = path.extname(itemPath);
+    return { path: itemPath, name: dirent.name, stats };
+  }));
+  return items;
 }
