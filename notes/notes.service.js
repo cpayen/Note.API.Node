@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const config = require('config.json');
+const { NoteDir } = require('./notes.classes')
 
 module.exports = {
   getTree,
@@ -8,8 +9,7 @@ module.exports = {
 };
 
 async function getTree() {
-  const { dataPath } = config;
-  return await walkDirs(path.resolve(dataPath, 'notes'));
+  return await walkDirs();
 }
 
 async function getDir(rootDir) {
@@ -18,12 +18,13 @@ async function getDir(rootDir) {
 }
 
 async function walkDirs(rootDir) {
-  const dirents = await fs.promises.readdir(rootDir, { withFileTypes: true });
-  const dirs = await Promise.all(dirents.map((dirent) => {
-    const res = path.resolve(rootDir, dirent.name);
-    if(dirent.isDirectory()) {
-      return { path: res, name: dirent.name };
-    }
+  rootDir = rootDir || '';
+  const rootPath = path.resolve(config.dataPath, 'notes', rootDir);
+  const dirents = await fs.promises.readdir(rootPath, { withFileTypes: true });
+  const dirs = await Promise.all(dirents.filter(o => o.isDirectory()).map((dirent) => {
+    const relativePath = (rootDir === '') ? dirent.name : [rootDir, dirent.name].join('/');
+    const stats = fs.statSync(path.resolve(rootPath, dirent.name));
+    return new NoteDir(dirent.name, relativePath, stats.ctime, stats.mtime);
   }));
   for (const dir of dirs) {
     dir.children = await walkDirs(dir.path);
