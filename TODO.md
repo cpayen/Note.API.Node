@@ -1,0 +1,3 @@
+- Use ES6 modules .mjs (?)
+- Use ES6 classes
+- Arch refactoring (app / domain / infra) (?)
