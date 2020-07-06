@@ -11,7 +11,7 @@ async function authenticate({ username, password }) {
   const user = await findUser(username, password);
   if (!user) throw 'Username or password is incorrect';
 
-  const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: '7d' });
+  const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: '7d', algorithm: 'HS256' });
 
   return {
     ...omitPassword(user),
