@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const config = require('config.json');
-const { NoteDir } = require('./notes.classes')
+const db = require('../../helpers/db');
+const { NoteDir } = require('./notes.classes');
 
 module.exports = {
   getTree,
@@ -13,13 +13,12 @@ async function getTree() {
 }
 
 async function getDir(rootDir) {
-  const { dataPath } = config;
-  return await listAll(path.resolve(dataPath, 'notes', rootDir));
+  return await listAll(path.resolve(db.getDataPath(), rootDir));
 }
 
 async function walkDirs(rootDir) {
   rootDir = rootDir || '';
-  const rootPath = path.resolve(config.dataPath, 'notes', rootDir);
+  const rootPath = path.resolve(db.getDataPath(), rootDir);
   const dirents = await fs.promises.readdir(rootPath, { withFileTypes: true });
   const dirs = await Promise.all(dirents.filter(o => o.isDirectory()).map((dirent) => {
     const relativePath = (rootDir === '') ? dirent.name : [rootDir, dirent.name].join('/');

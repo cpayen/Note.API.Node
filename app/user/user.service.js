@@ -2,6 +2,7 @@ const config = require('config.json');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+const db = require('../../helpers/db');
 
 module.exports = {
   authenticate
@@ -22,7 +23,7 @@ async function authenticate({ username, password }) {
 // helper functions
 
 async function findUser(username, password) {
-  const userFilePath = path.resolve(config.dataPath, 'users', `${username}.json`);
+  const userFilePath = path.resolve(db.getUsersPath(), `${username}.json`);
   let user = false;
 
   await fs.promises.readFile(userFilePath) 
