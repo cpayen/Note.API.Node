@@ -1,3 +1,6 @@
 - Use ES6 modules .mjs (?)
 - Use ES6 classes
 - Arch refactoring (app / domain / infra) (?)
+- Add logging
+- Env management
+- Helper / infra layer : manage data paths
