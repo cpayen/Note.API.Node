@@ -3,9 +3,26 @@ const path = require('path');
 const config = require('../config.json');
 
 module.exports = {
+  authUser,
   listDirs,
   listDirContent
 };
+
+async function authUser(username, password) {
+  const userFilePath = path.resolve(getUsersPath(), `${username}.json`);
+  let user = false;
+
+  await fs.promises.readFile(userFilePath) 
+    .then((result) => { 
+      const jsonUser = JSON.parse(result);
+      if(jsonUser.password === password) {
+        user = jsonUser;
+      }
+    }) 
+    .catch();
+  
+  return user;
+}
 
 async function listDirs(dirPath) {
   return (await listDirContent(dirPath)).filter(o => o.type === 'dir');
@@ -34,4 +51,8 @@ async function listDirContent(dirPath) {
 
 function getNotesPath() {
   return path.resolve(config.dataPath, 'notes');
+}
+
+function getUsersPath() {
+  return path.resolve(config.dataPath, 'users');
 }
