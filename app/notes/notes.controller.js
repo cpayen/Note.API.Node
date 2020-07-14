@@ -4,7 +4,8 @@ const notesService = require('./notes.service');
 
 // routes
 router.get('/tree', getTree);
-router.get('/:dir1?/:dir2?/:dir3?', getDir);
+router.get('/list', getList);
+router.get('/list/*', getList);
 
 module.exports = router;
 
@@ -14,9 +15,8 @@ function getTree(req, res, next) {
     .catch(next);
 }
 
-function getDir(req, res, next) {
-  const p = req.params;
-  const rootDir = [p.dir1, p.dir2, p.dir3].filter(o => o !== undefined).join('/');
+function getList(req, res, next) {
+  const rootDir = req.params[0];
   notesService.getDir(rootDir)
     .then(data => res.json(data))
     .catch(next);
