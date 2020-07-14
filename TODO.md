@@ -3,7 +3,3 @@
 - Add logging
 - Env management
 - Custom errors (404 / not found, 400 / Bad request...)
-- Change api urls:
-  - tree
-  - notes/tree?path=...
-  - notes/file?path=...
