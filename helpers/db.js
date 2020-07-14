@@ -10,8 +10,16 @@ module.exports = {
 
 async function authUser(username, password) {
   const userFilePath = path.resolve(getUsersPath(), `${username}.json`);
-  let user = false;
+  
+  const userFileExists = await fs.promises.access(userFilePath)
+    .then(() => true)
+    .catch(() => false);
+  
+  if(!userFileExists) {
+    return false;
+  }
 
+  let user = false;
   await fs.promises.readFile(userFilePath) 
     .then((result) => { 
       const jsonUser = JSON.parse(result);
