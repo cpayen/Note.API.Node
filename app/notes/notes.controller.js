@@ -17,7 +17,7 @@ function getTree(req, res, next) {
 
 function getList(req, res, next) {
   const rootDir = req.params[0];
-  notesService.getDir(rootDir)
+  notesService.getEntries(rootDir)
     .then(data => res.json(data))
     .catch(next);
 }

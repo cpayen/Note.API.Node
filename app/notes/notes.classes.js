@@ -1,5 +1,4 @@
-
-class NoteDir {
+class NoteItem {
 
   constructor(name, path, createdAt, updatedAt) {
     this.name = name;
@@ -12,28 +11,62 @@ class NoteDir {
   path;
   createdAt;
   updatedAt;
-
-  children;
 }
 
-class NoteItem {
+class NoteItemDir extends NoteItem {
 
-  constructor(name, path, type, createdAt, updatedAt) {
-    this.name = name;
-    this.path = path;
-    this.type = type;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+  constructor(name, path, createdAt, updatedAt) {
+    super(name, path, createdAt, updatedAt);
+    this.type = 'dir';
   }
 
-  name;
-  path;
   type;
-  createdAt;
-  updatedAt;
+}
+
+class NoteItemFile extends NoteItem {
+  
+  constructor(name, path, createdAt, updatedAt) {
+    super(name, path, createdAt, updatedAt);
+    this.type = 'file';
+  }
+
+  type;
+}
+
+class NoteItemLink extends NoteItem {
+  
+  constructor(name, path, createdAt, updatedAt) {
+    super(name, path, createdAt, updatedAt);
+    this.type = 'link';
+  }
+
+  type;
+}
+
+class NoteItemPage extends NoteItem {
+  
+  constructor(name, path, createdAt, updatedAt) {
+    super(name, path, createdAt, updatedAt);
+    this.type = 'page';
+  }
+
+  type;
+}
+
+class NoteItemTodo extends NoteItem {
+  
+  constructor(name, path, createdAt, updatedAt) {
+    super(name, path, createdAt, updatedAt);
+    this.type = 'todo';
+  }
+
+  type;
 }
 
 module.exports = {
-  NoteDir,
-  NoteItem
+  NoteItemDir,
+  NoteItemPage,
+  NoteItemTodo,
+  NoteItemLink,
+  NoteItemFile
 };
