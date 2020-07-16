@@ -15,12 +15,12 @@ async function getEntries(rootDir) {
 }
 
 async function walkDirs(rootDir) {
-  const dirs = (await db.listDirs(rootDir)).map((dirent) => {
+  const dirs = (await db.listDirs(rootDir)).map((entry) => {
     return new NoteItemDir(
-      dirent.name, 
-      dirent.path, 
-      dirent.stats.ctime, 
-      dirent.stats.mtime);
+      entry.name, 
+      entry.path, 
+      entry.ctime, 
+      entry.mtime);
   });
 
   for (const dir of dirs) {
@@ -31,42 +31,23 @@ async function walkDirs(rootDir) {
 }
 
 async function listAll(rootDir) {
-  const items = (await db.listDirEntries(rootDir)).map((dirent) => {
-    let itemType = dirent.type;
-    if(dirent.data !== null) {
-      itemType = dirent.data.type;
+  const items = (await db.listDirEntries(rootDir)).map((entry) => {
+    let itemType = entry.isDirectory ? 'dir' : 'file';
+    if(entry.data && entry.data.type) {
+      itemType = entry.data.type;
     }
+    const commonParams = [entry.name, entry.path, entry.ctime, entry.mtime]
     switch (itemType) {
       case 'dir':
-        return new NoteItemDir(
-          dirent.name, 
-          dirent.path, 
-          dirent.stats.ctime, 
-          dirent.stats.mtime);
+        return new NoteItemDir(...commonParams);
       case 'link':
-        return new NoteItemLink(
-          dirent.name, 
-          dirent.path, 
-          dirent.stats.ctime, 
-          dirent.stats.mtime);
+        return new NoteItemLink(...commonParams, entry.data);
       case 'page':
-        return new NoteItemPage(
-          dirent.name, 
-          dirent.path, 
-          dirent.stats.ctime, 
-          dirent.stats.mtime);
+        return new NoteItemPage(...commonParams, entry.data);
       case 'todo':
-        return new NoteItemTodo(
-          dirent.name, 
-          dirent.path, 
-          dirent.stats.ctime, 
-          dirent.stats.mtime);
+        return new NoteItemTodo(...commonParams, entry.data);
       default:
-        return new NoteItemFile(
-          dirent.name, 
-          dirent.path, 
-          dirent.stats.ctime, 
-          dirent.stats.mtime);
+        return new NoteItemFile(...commonParams);
     }
   });
 
