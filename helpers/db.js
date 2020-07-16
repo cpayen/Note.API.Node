@@ -7,7 +7,8 @@ const { DbEntry } = require('./db.classes');
 module.exports = {
   authUser,
   listDirs,
-  listDirEntries
+  listDirEntries,
+  checkAccess,
 };
 
 async function authUser(username, password) {
@@ -41,6 +42,7 @@ async function listDirs(dirPath) {
 async function listDirEntries(dirPath) {
   dirPath = dirPath || '';
   const rootPath = path.resolve(getNotesPath(), dirPath);
+
   const dirents = await fs.promises.readdir(rootPath, { withFileTypes: true });
   const entries = await Promise.all(dirents.map(async (dirent) => {
     const relativePath = dirPath === '' ? dirent.name : [dirPath, dirent.name].join('/');
@@ -48,7 +50,15 @@ async function listDirEntries(dirPath) {
     const data = stats.isDirectory() ? null : await getItemData(path.resolve(rootPath, dirent.name));
     return new DbEntry(relativePath, dirent.name, stats.ctime, stats.mtime, stats.isDirectory(), data);
   }));
+
   return entries;
+}
+
+async function checkAccess(itemPath) {
+  const rootPath = path.resolve(getNotesPath(), itemPath);
+  return await fs.promises.access(rootPath)
+    .then(() => true)
+    .catch(() => false);
 }
 
 function getNotesPath() {
@@ -102,7 +112,7 @@ async function getMarkdownItemData(itemPath) {
   try {
     data = JSON.parse(jsonText);
   } catch (error) {
-    // Domain error ?
+    //throw new BadFileFormatError(itemPath);
   }
   return data;
 }

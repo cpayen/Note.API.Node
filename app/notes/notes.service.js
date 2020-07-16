@@ -1,5 +1,6 @@
 const db = require('../../helpers/db');
 const { NoteItemDir, NoteItemFile, NoteItemLink, NoteItemPage, NoteItemTodo } = require('./notes.classes');
+const { ResourceNotFoundError } = require('../../errors/errors.classes');
 
 module.exports = {
   getTree,
@@ -11,6 +12,7 @@ async function getTree() {
 }
 
 async function getEntries(rootDir) {
+  if(await db.checkAccess(rootDir) === false) throw new ResourceNotFoundError(rootDir);
   return await listAll(rootDir);
 }
 

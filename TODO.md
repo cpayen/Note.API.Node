@@ -1,6 +1,4 @@
-- Use ES6 modules .mjs (?)
-- Use ES6 classes
 - Add logging
 - Env management
-- Custom errors (404 / not found, 400 / Bad request, xxx / Bad file format...)
-- Check files data
+- Check files data and send custom error
+- Page detail
