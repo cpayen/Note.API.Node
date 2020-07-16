@@ -2,4 +2,5 @@
 - Use ES6 classes
 - Add logging
 - Env management
-- Custom errors (404 / not found, 400 / Bad request...)
+- Custom errors (404 / not found, 400 / Bad request, xxx / Bad file format...)
+- Check files data
