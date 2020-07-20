@@ -55,7 +55,7 @@ async function listDirEntries(dirPath) {
 }
 
 async function checkAccess(itemPath) {
-  const rootPath = path.resolve(getNotesPath(), itemPath);
+  const rootPath = path.resolve(getNotesPath(), itemPath || '');
   return await fs.promises.access(rootPath)
     .then(() => true)
     .catch(() => false);
