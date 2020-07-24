@@ -1,6 +1,6 @@
 const db = require('../../helpers/db');
 const { NoteItemDir, NoteItemFile, NoteItemLink, NoteItemPage, NoteItemTodo } = require('./notes.classes');
-const { ResourceNotFoundError, BadFileFormatError } = require('../../errors/errors.classes');
+const { ResourceNotFoundError } = require('../../errors/errors.classes');
 const logger = require('../../helpers/logger');
 
 module.exports = {
