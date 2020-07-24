@@ -1,4 +1,3 @@
-- Add logging
 - Env management
 - Check files data and send custom error
 - Page detail
