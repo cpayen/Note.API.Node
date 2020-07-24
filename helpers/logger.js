@@ -3,27 +3,24 @@ const { format } = require('logform');
 
 const fileFormat = format.combine(
   format.timestamp(),
-  format.align(),
   format.errors({ stack: true }),
-  format.printf(info => {
-    if(info.stack) {
-      return `${info.timestamp} ${info.level}: ${info.message} \n${info.stack}`;
-    }
-    return `${info.timestamp} ${info.level}: ${info.message}`;
-  })
+  format.printf(info => getMessage(info))
 );
 
 const consoleFormat = format.combine(
   format.colorize(),
   format.timestamp(),
   format.errors({ stack: true }),
-  format.printf(info => {
-    if(info.stack) {
-      return `${info.timestamp} ${info.level}: ${info.message} \n${info.stack}`;
-    }
-    return `${info.timestamp} ${info.level}: ${info.message}`;
-  })
+  format.printf(info => getMessage(info))
 );
+
+const getMessage = (info) => {
+  let message = `${info.timestamp} ${info.level}: ${info.message}`;
+  if(info.stack) {
+    message += `\n    stack: ${info.stack}`;
+  }
+  return message;
+}
 
 const logger = winston.createLogger({
   level: 'info',
