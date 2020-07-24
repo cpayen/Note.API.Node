@@ -20,12 +20,6 @@ class NoteItem {
         throw new BadFileFormatError(this.path);
       }
     }
-
-    // for (const prop of props) {
-    //   if(!data[prop]) {
-    //     throw new BadFileFormatError(this.path);
-    //   }
-    // }
   }
 }
 
