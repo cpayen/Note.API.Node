@@ -1,6 +1,7 @@
 const db = require('../../helpers/db');
 const { NoteItemDir, NoteItemFile, NoteItemLink, NoteItemPage, NoteItemTodo } = require('./notes.classes');
-const { ResourceNotFoundError } = require('../../errors/errors.classes');
+const { ResourceNotFoundError, BadFileFormatError } = require('../../errors/errors.classes');
+const logger = require('../../helpers/logger');
 
 module.exports = {
   getTree,
@@ -38,20 +39,27 @@ async function listAll(rootDir) {
     if(entry.data && entry.data.type) {
       itemType = entry.data.type;
     }
+    
     const commonParams = [entry.name, entry.path, entry.ctime, entry.mtime]
-    switch (itemType) {
-      case 'dir':
-        return new NoteItemDir(...commonParams);
-      case 'link':
-        return new NoteItemLink(...commonParams, entry.data);
-      case 'page':
-        return new NoteItemPage(...commonParams, entry.data);
-      case 'todo':
-        return new NoteItemTodo(...commonParams, entry.data);
-      default:
-        return new NoteItemFile(...commonParams);
+    try {
+      switch (itemType) {
+        case 'dir':
+          return new NoteItemDir(...commonParams);
+        case 'link':
+          return new NoteItemLink(...commonParams, entry.data);
+        case 'page':
+          return new NoteItemPage(...commonParams, entry.data);
+        case 'todo':
+          return new NoteItemTodo(...commonParams, entry.data);
+        default:
+          return new NoteItemFile(...commonParams);
+      }
+    } catch (error) {
+      logger.error(error);
+      return null;
     }
   });
 
-  return items;
+  return items.filter(o => o !== null);
 }
+

@@ -94,25 +94,24 @@ async function getMarkdownItemData(itemPath) {
   });
 
   let jsonText = '';
-  let readLine = false;
+  let firstLine = true;
   for await (const line of rl) {
-    if (line.includes('<!---')) {
-      readLine = true;
+    if(firstLine) {
+      firstLine = false;
+      if (!line.includes('<!---')) {
+        break;
+      }
       continue;
     }
     if (line.includes('--->')) {
       break;
     }
-    if (readLine) {
-      jsonText += line;
-    }
+    jsonText += line;
   }
 
   let data = null;
   try {
     data = JSON.parse(jsonText);
-  } catch (error) {
-    //throw new BadFileFormatError(itemPath);
-  }
+  } catch (error) {}
   return data;
 }

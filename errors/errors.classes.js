@@ -9,14 +9,12 @@ class DomainError extends Error {
 class ResourceNotFoundError extends DomainError {
   constructor(path) {
     super(`Resource "${path}" was not found.`);
-    this.data = { path };
   }
 }
 
 class BadFileFormatError extends DomainError {
-  constructor(file, error) {
+  constructor(file) {
     super(`File "${file}" is not well formatted.`);
-    this.data = { file, error };
   }
 }
 
