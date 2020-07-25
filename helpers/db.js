@@ -8,6 +8,7 @@ module.exports = {
   authUser,
   listDirs,
   listDirEntries,
+  getEntry,
   checkAccess,
 };
 
@@ -52,6 +53,16 @@ async function listDirEntries(dirPath) {
   }));
 
   return entries;
+}
+
+async function getEntry(itemPath) {
+  const rootPath = path.resolve(getNotesPath(), itemPath);
+  const file = await fs.promises.readFile(rootPath);
+  const stats = fs.statSync(rootPath)
+  const data = await getItemData(rootPath);
+  let entry = new DbEntry(itemPath, file.name, stats.ctime, stats.mtime, stats.isDirectory(), data);
+  entry.content = file.toString();
+  return entry;
 }
 
 async function checkAccess(itemPath) {

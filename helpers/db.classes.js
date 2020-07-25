@@ -13,8 +13,9 @@ class DbEntry {
   name;
   ctime;
   mtime;
-  data;
   isDirectory;
+  data;
+  content;
 }
 
 module.exports = {

@@ -5,7 +5,8 @@ const logger = require('../../helpers/logger');
 
 module.exports = {
   getTree,
-  getEntries
+  getEntries,
+  getEntry
 };
 
 async function getTree() {
@@ -15,6 +16,11 @@ async function getTree() {
 async function getEntries(rootDir) {
   if(await db.checkAccess(rootDir) === false) throw new ResourceNotFoundError(rootDir);
   return await listAll(rootDir);
+}
+
+async function getEntry(entryPath) {
+  if(await db.checkAccess(entryPath) === false) throw new ResourceNotFoundError(entryPath);
+  return await getPage(entryPath);
 }
 
 async function walkDirs(rootDir) {
@@ -63,3 +69,9 @@ async function listAll(rootDir) {
   return items.filter(o => o !== null);
 }
 
+async function getPage(entryPath) {
+  const entry = await db.getEntry(entryPath);
+  let page = new NoteItemPage(entry.name, entry.path, entry.createdAt, entry.updatedAt, entry.data);
+  page.content = entry.content;
+  return page;
+}

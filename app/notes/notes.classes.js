@@ -75,6 +75,7 @@ class NoteItemPage extends NoteItem {
   type;
   title;
   description;
+  content;
 }
 
 class NoteItemTodo extends NoteItem {
