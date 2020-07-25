@@ -49,7 +49,7 @@ async function listDirEntries(dirPath) {
     const relativePath = dirPath === '' ? dirent.name : [dirPath, dirent.name].join('/');
     const stats = fs.statSync(path.resolve(rootPath, dirent.name))
     const data = stats.isDirectory() ? null : await getItemData(path.resolve(rootPath, dirent.name));
-    return new DbEntry(relativePath, dirent.name, stats.ctime, stats.mtime, stats.isDirectory(), data);
+    return new DbEntry(relativePath, dirent.name, stats.birthtime, stats.mtime, stats.isDirectory(), data);
   }));
 
   return entries;
@@ -60,7 +60,7 @@ async function getEntry(itemPath) {
   const file = await fs.promises.readFile(rootPath);
   const stats = fs.statSync(rootPath)
   const data = await getItemData(rootPath);
-  let entry = new DbEntry(itemPath, file.name, stats.ctime, stats.mtime, stats.isDirectory(), data);
+  let entry = new DbEntry(itemPath, file.name, stats.birthtime, stats.mtime, stats.isDirectory(), data);
   entry.content = file.toString();
   return entry;
 }
