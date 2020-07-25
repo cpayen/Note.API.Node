@@ -7,7 +7,7 @@ const { DbEntry } = require('./db.classes');
 module.exports = {
   authUser,
   listDirs,
-  listDirEntries,
+  listEntries,
   getEntry,
   checkAccess,
 };
@@ -37,15 +37,20 @@ async function authUser(username, password) {
 }
 
 async function listDirs(dirPath) {
-  return (await listDirEntries(dirPath)).filter(o => o.isDirectory);
+  return await listFilteredEntries(dirPath, o => o.isDirectory());
 }
 
-async function listDirEntries(dirPath) {
-  dirPath = dirPath || '';
-  const rootPath = path.resolve(getNotesPath(), dirPath);
+async function listEntries(dirPath) {
+  return await listFilteredEntries(dirPath);
+}
 
+async function listFilteredEntries(dirPath, filter) {
+  dirPath = dirPath || '';
+  filter = filter || ((o) => true);
+
+  const rootPath = path.resolve(getNotesPath(), dirPath);
   const dirents = await fs.promises.readdir(rootPath, { withFileTypes: true });
-  const entries = await Promise.all(dirents.map(async (dirent) => {
+  const entries = await Promise.all(dirents.filter(filter).map(async (dirent) => {
     const relativePath = dirPath === '' ? dirent.name : [dirPath, dirent.name].join('/');
     const stats = fs.statSync(path.resolve(rootPath, dirent.name))
     const data = stats.isDirectory() ? null : await getItemData(path.resolve(rootPath, dirent.name));

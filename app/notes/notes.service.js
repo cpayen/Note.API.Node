@@ -40,7 +40,7 @@ async function walkDirs(rootDir) {
 }
 
 async function listAll(rootDir) {
-  const items = (await db.listDirEntries(rootDir)).map((entry) => {
+  const items = (await db.listEntries(rootDir)).map((entry) => {
     let itemType = entry.isDirectory ? 'dir' : 'file';
     if(entry.data && entry.data.type) {
       itemType = entry.data.type;
