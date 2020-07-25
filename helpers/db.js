@@ -62,11 +62,11 @@ async function listFilteredEntries(dirPath, filter) {
 
 async function getEntry(itemPath) {
   const rootPath = path.resolve(getNotesPath(), itemPath);
-  const file = await fs.promises.readFile(rootPath);
+  const file = await fs.promises.readFile(rootPath, 'utf8');
   const stats = fs.statSync(rootPath)
-  const data = await getItemData(rootPath);
+  const data = await getMarkdownItemData(rootPath);
   let entry = new DbEntry(itemPath, file.name, stats.birthtime, stats.mtime, stats.isDirectory(), data);
-  entry.content = file.toString();
+  entry.content = file;
   return entry;
 }
 
