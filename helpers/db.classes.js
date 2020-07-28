@@ -5,17 +5,14 @@ class DbEntry {
     this.name = name;
     this.ctime = ctime;
     this.mtime = mtime;
-    this.isDirectory = isDirectory;
-    this.data = data;
+    this.type = isDirectory ? 'dir' : 'file';
+    
+    if(data) {
+      for (const [key, value] of Object.entries(data)) {
+        this[key] = value;
+      }
+    }
   }
-
-  path;
-  name;
-  ctime;
-  mtime;
-  isDirectory;
-  data;
-  content;
 }
 
 module.exports = {
