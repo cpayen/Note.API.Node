@@ -1,3 +1,4 @@
-- Env management
-- Check files data and send custom error
-- Page detail
+- Enhance env management
+- More generic content types yo handle a part of logic front side
+- Add CRUD functionnalities
+- Handle frontmatter (json?) in md files
