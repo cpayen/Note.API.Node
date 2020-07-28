@@ -1,4 +1,4 @@
 - Enhance env management
-- More generic content types yo handle a part of logic front side
+- More generic content types to handle a part of logic front side
 - Add CRUD functionnalities
 - Handle frontmatter (json?) in md files
