@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
-const config = require('../config.json');
+const config = require('../config/config');
 const { DbEntry } = require('./db.classes');
 
 module.exports = {

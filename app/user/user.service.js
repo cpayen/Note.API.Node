@@ -1,4 +1,4 @@
-const config = require('../../config.json');
+const config = require('../../config/config');
 const jwt = require('jsonwebtoken');
 const db = require('../../helpers/db');
 
