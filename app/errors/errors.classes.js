@@ -12,13 +12,6 @@ class ResourceNotFoundError extends DomainError {
   }
 }
 
-class BadFileFormatError extends DomainError {
-  constructor(file) {
-    super(`File "${file}" is not well formatted.`);
-  }
-}
-
 module.exports = {
   ResourceNotFoundError,
-  BadFileFormatError,
 };
