@@ -116,4 +116,4 @@ dist
 .pnp.*
 
 # Custom: config
-config/config.production.json
+app/config/config.production.json

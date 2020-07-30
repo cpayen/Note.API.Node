@@ -2,8 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const jwt = require('./middlewares/jwt');
-const errorHandler = require('./middlewares/errors');
+const jwt = require('./app/middlewares/jwt');
+const errorHandler = require('./app/middlewares/errors');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -13,8 +13,8 @@ app.use(cors());
 app.use(jwt());
 
 // api routes
-app.use('/user', require('./app/user/user.controller'));
-app.use('/notes', require('./app/notes/notes.controller'));
+app.use('/user', require('./app/api/user/user.controller'));
+app.use('/notes', require('./app/api/notes/notes.controller'));
 
 // global error handler
 app.use(errorHandler);
