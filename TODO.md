@@ -1,1 +1,2 @@
 - Add CRUD functionnalities
+- Add bookmarks
